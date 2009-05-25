@@ -30,7 +30,7 @@ sub random
 				  : $choice;
 		return $selection if defined $selection;
 	}
-	die "couldn't randomize: " . join(", ", @_) . "at " . (caller)[2];
+	die "couldn't randomize: " . join(', ', @_) . 'at ' . (caller)[2];
 }
 
 sub syl_count
@@ -48,12 +48,12 @@ sub syl_count
 
 # Personages
 
-@Coy::personage = ( "The Jade Emperor", "Master Po", "Mumon", 
-		  "The Seventh Sage", "the Master", "Alan Watts",
-		  "Tor Kin Tun", "Tom See", "Or Wunt",
-		  "Homer Simpson", "Lao Tse", "The Buddha",
-		  "Gautama", "Swordmaster Mushashi", "Con Wei",
-		  "Joshu", "Bankei", "Ryokan", "Ryonen", "Eshun",
+@Coy::personage = ( 'The Jade Emperor', 'Master Po', 'Mumon', 
+		  'The Seventh Sage', 'the Master', 'Alan Watts',
+		  'Tor Kin Tun', 'Tom See', 'Or Wunt',
+		  'Homer Simpson', 'Lao Tse', 'The Buddha',
+		  'Gautama', 'Swordmaster Mushashi', 'Con Wei',
+		  'Joshu', 'Bankei', 'Ryokan', 'Ryonen', 'Eshun',
 		);
 
 
@@ -68,47 +68,47 @@ my @aquatic    = qw( pond  river  pool  dam  stream  lake );
 
 sub Aquatic::atRandom
 	{ random 
-		"in the " . random(@aquatic),
-		"in " . A(random @aquatic)
+		'in the ' . random(@aquatic),
+		'in ' . A(random @aquatic)
 		;
 	}
 
 sub Exoaquatic::atRandom
 	{ random 
-		"out of the " . random(@aquatic),
-		"from " . A(random @aquatic)
+		'out of the ' . random(@aquatic),
+		'from ' . A(random @aquatic)
 		;
 	}
 
 sub Suraquatic::atRandom
 	{ random 
-		"on the " . random(@aquatic),
-		"on " . A(random @aquatic)
+		'on the ' . random(@aquatic),
+		'on ' . A(random @aquatic)
 		;
 	}
 
 sub Aerial::atRandom
 	{ random
-		"over the " . random(@aquatic),
-		"above the " . random(@aquatic),
-		"over " . random(@Coy::place),
-		"above " . random(@Coy::place),
-		"near " . random(@Coy::place)
+		'over the ' . random(@aquatic),
+		'above the ' . random(@aquatic),
+		'over ' . random(@Coy::place),
+		'above ' . random(@Coy::place),
+		'near ' . random(@Coy::place)
 	}
 
 sub Arborial::atRandom
 	{ random 
-		"in " . A(random @Coy::tree),
-		"in the branches of " . A(random @Coy::tree),
-		"in " . A(random @Coy::tree, @Coy::fruit_tree) . " tree",
-		"in the branches of " . A(random @Coy::tree, @Coy::fruit_tree) . " tree";
+		'in ' . A(random @Coy::tree),
+		'in the branches of ' . A(random @Coy::tree),
+		'in ' . A(random @Coy::tree, @Coy::fruit_tree) . ' tree',
+		'in the branches of ' . A(random @Coy::tree, @Coy::fruit_tree) . ' tree';
 	}
 
 sub Terrestrial::atRandom
 	{ random
-		"under " . A(random @Coy::tree) . random(" tree", ""),
-		"near " . random(@Coy::place),
-		"beside " . A(random @aquatic);
+		'under ' . A(random @Coy::tree) . random(' tree', ''),
+		'near ' . random(@Coy::place),
+		'beside ' . A(random @aquatic);
 	}
 
 
@@ -118,8 +118,8 @@ my @horizontalNS = qw( north south );
 my @horizontalEW = qw( east west );
 my @vertical    = qw( up upwards down downwards );
 my @general_dir = qw( away );
-my @to_dir_prep    = ( "towards" );
-my @from_dir_prep    = ( "away from", );
+my @to_dir_prep    = ( 'towards' );
+my @from_dir_prep    = ( 'away from', );
 
 sub Horizontal::atRandom
 	{ my $compass = random
@@ -514,7 +514,7 @@ noun
 				direction => Horizontal,
 			},
 		},
-		sound => [ "quacks", ]
+		sound => [ 'quacks', ]
 	},
 	swallow =>
 	{
@@ -522,11 +522,11 @@ noun
 		act => { swoops => { location => Aerial, } },
 	},
 	raven	   => { category => [ Bird ] },
-	thrush	   => { category => [ Bird ], sound => [ "sings" ]},
-	songbird   => { category => [ Bird ], sound => [ "sings" ]},
-	lark       => { category => [ Bird ], sound => [ "sings" ]},
+	thrush	   => { category => [ Bird ], sound => [ 'sings' ]},
+	songbird   => { category => [ Bird ], sound => [ 'sings' ]},
+	lark       => { category => [ Bird ], sound => [ 'sings' ]},
 	gannet	   => { category => [ Bird ] },
-	dove	   => { category => [ Bird ], sound => [ "coos" ] },
+	dove	   => { category => [ Bird ], sound => [ 'coos' ] },
 	kingfisher => { category => [ Bird ] },
 	woodpecker => { category => [ Bird ] },
 
@@ -539,7 +539,7 @@ noun
 	fox =>
 	{
 		category => [ Animal, Hunter ],
-		sound    => [ "barks" ],
+		sound    => [ 'barks' ],
 		act =>
 		{
 			trots => { location => Terrestrial },
@@ -548,7 +548,7 @@ noun
 	bear =>
 	{
 		category => [ Animal ],
-		sound    => [ "howls" ],
+		sound    => [ 'howls' ],
 		act      =>
 		{
 			fishes => { location => Aquatic },
@@ -557,12 +557,12 @@ noun
 	wolf =>
 	{
 		category => [ Animal, Hunter ],
-		sound    => [ "howls" ],
+		sound    => [ 'howls' ],
 	},
 	cat =>
 	{
 		category => [ Animal, Hunter ],
-		sound    => [ "purrs", "yowls" ],
+		sound    => [ 'purrs', 'yowls' ],
 		act =>
 		{
 			washes   => { location => Terrestrial },
@@ -627,19 +627,19 @@ categories
 		{
 			dies =>
 			{
-				associations => "die depart exit",
+				associations => 'die depart exit',
 				location => Terrestrial,
 			},
 			quarrels =>
 			{
-				associations => "argument",
+				associations => 'argument',
 				location => Terrestrial,
 				minimum => 2,
 				synonyms => [qw(bickers argues banters fights)],
 			},
 			contends =>
 			{
-				associations => "argument",
+				associations => 'argument',
 				location => Terrestrial,
 				minimum => 2,
 				synonyms => [qw(debates)],
@@ -647,13 +647,13 @@ categories
 			},
 			sits =>
 			{
-				associations => "rest static stop",
+				associations => 'rest static stop',
 				location => Terrestrial,
 				non_adjectival => 1,
 			},
 			meets =>
 			{
-				associations => "join together",
+				associations => 'join together',
 				location => Terrestrial,
 				minimum => 2,
 				non_adjectival => 1,
@@ -661,34 +661,34 @@ categories
 			},
 			laughs =>
 			{
-				associations => "happy",
+				associations => 'happy',
 				location => Terrestrial,
 				non_adjectival => 1,
 			},
 			parts =>
 			{
-				associations => "leave left miss",
+				associations => 'leave left miss',
 				location => Terrestrial,
 				minimum => 2,
 			},
 			departs =>
 			{
-				associations => "leave left miss",
+				associations => 'leave left miss',
 				location => Terrestrial,
 			},
 			weeps =>
 			{
-				associations => "NEG",
+				associations => 'NEG',
 				location => Terrestrial,
 			},
 			sighs =>
 			{
-				associations => "NEG",
+				associations => 'NEG',
 				location => Terrestrial,
 			},
 			embraces =>
 			{
-				associations => "join together with",
+				associations => 'join together with',
 				location => Terrestrial,
 				minimum => 2,
 				maximum => 2,
@@ -701,24 +701,24 @@ categories
 		{
 			sits =>
 			{
-				associations => "static",
+				associations => 'static',
 				location => Terrestrial,
 			},
 			walks =>
 			{
-				associations => "gone",
+				associations => 'gone',
 				location => Terrestrial,
 				non_adjectival => 1,
 			},
 			watches =>
 			{
-				associations => "see",
+				associations => 'see',
 				location => Terrestrial,
 				non_adjectival => 1,
 			},
 			waits =>
 			{
-				associations => "wait",
+				associations => 'wait',
 				location => Terrestrial,
 				non_adjectival => 1,
 			},
@@ -781,10 +781,10 @@ tree qw( oak elm willow maple she-oak );
 
 fruit_tree qw( cherry apple lemon );
 
-place ( "Mount Fuji", "a temple",  "the Emperor's palace",
-        "a dojo", "the Shaolin temple", "a farmer's cottage",
-        "the village", "the town square", "the harbor",
-        "Bill Clinton's office", "a monastry", "the market-place",
+place ( 'Mount Fuji', 'a temple',  "the Emperor's palace",
+        'a dojo', 'the Shaolin temple', "a farmer's cottage",
+        'the village', 'the town square', 'the harbor',
+        "Bill Clinton's office", 'a monastry', 'the market-place',
       );
 
 

@@ -5,6 +5,7 @@ BEGIN
 require Exporter;
 @ISA = ('Exporter');
 @EXPORT = qw(transcend enlighten);
+$VERSION = 0.06;
 
 my $USER_CONFIG_FILE = "$ENV{HOME}/.coyrc";
 

@@ -1,0 +1,14 @@
+Revision history for Perl extension Coy.
+
+0.01  Sat May 30 15:06:38 1998
+	- original version; created by h2xs 1.18
+
+
+0.05	Thu Sep  9 17:39:02 1999
+
+	- Added user-configurable vocabulary
+
+	- Added user-configurable syllable checker
+
+	- Improved documentation
+

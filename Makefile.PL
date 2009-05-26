@@ -12,7 +12,7 @@ WriteMakefile(
 
     PREREQ_PM           => {
         'Lingua::EN::Inflect'   => '1.89',
-        'Test::More'            => '0.40',
+        'Test::More'            => '0.47',
     },
 
 

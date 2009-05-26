@@ -5,7 +5,7 @@ BEGIN
 require Exporter;
 @ISA = ('Exporter');
 @EXPORT = qw(transcend enlighten);
-$VERSION = 0.06;
+$VERSION = '0.06';
 
 my $USER_CONFIG_FILE = "$ENV{HOME}/.coyrc";
 
@@ -834,7 +834,7 @@ __END__
 
 =head1 NAME
 
-    Coy (like Carp only prettier)
+Coy - Like Carp only prettier
 
 =head1 SYNOPSIS
 
@@ -1146,10 +1146,28 @@ __END__
 	module was developed by
 	Damian Conway.
 
+	And Michael G Schwern
+	Carried it back from the dead
+	And maintains it now.
+
+=head1 BUGS
+
+	Please report all bugs,
+	suggestions as well as trouble
+	to this URL:
+
+L<http://rt.cpan.org/Public/Dist/Display.html?Name=Coy>
+
+	The latest version
+	Can be found for all to see
+	Posted on github
+
+L<http://github.com/schwern/coy/tree/master>
+
 
 =head1 COPYRIGHT
 
-        Copyright (c) 1998, Damian Conway. All Rights Reserved.
+        Copyright (c) 1998, 2009 Damian Conway. All Rights Reserved.
       This module is free software. It may be used, redistributed
       and/or modified under the terms of the Perl Artistic License
            (see http://www.perl.com/perl/misc/Artistic.html)

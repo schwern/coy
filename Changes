@@ -2,6 +2,9 @@
   Bug Fixes
   * Removed broken Lingua::EN::Inflect
 
+  Other
+  * Minimal modernisation and re-release
+
 
 0.05  Thu Sep  9 17:39:02 1999
   - Added user-configurable vocabulary

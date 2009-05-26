@@ -1,5 +1,5 @@
 ==============================================================================
-                        Release of version 0.05 of Coy
+                        Coy.pm
 ==============================================================================
 
 DESCRIPTION
@@ -56,24 +56,10 @@ DESCRIPTION
 
 ==============================================================================
 
-CHANGES IN VERSION 0.05
-
-
-	- Added user-configurable vocabulary
-
-	- Added user-configurable syllable checker
-
-	- Improved documentation
-
-
-
-==============================================================================
-
 AVAILABILITY
 
-Coy has been uploaded to the CPAN
-and is also available from:
+Coy has been uploaded to the CPAN and is also available from:
 
-	http://www.csse.monash.edu.au/~damian/CPAN/Coy.tar.gz
+	https://github.com/schwern/coy/tree
 
 ==============================================================================

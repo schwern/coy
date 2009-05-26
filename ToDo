@@ -1,0 +1,79 @@
+* Add more vocabulary
+
+* Add more grammar rules
+
+* General clean and tighten :-)
+
+-----------cut-----------cut-----------cut-----------cut-----------cut----------
+   
+   > * A way to _completely_ disable the built in database, so only .coyrc is used.
+
+Can do. Will do. Did do. Will be in the next release.
+
+-----------cut-----------cut-----------cut-----------cut-----------cut----------
+
+   > * Even better, instead .coyrc, specifying the database inline in the script
+   > that uses Coy.
+
+Err, that's tricky, since Coy needs to set things up as it loads. Hmmmm. I 
+suppose you could pass a hash with the inline data to "use Coy":
+
+	use Coy {
+	          noun => {
+                        wookie =>
+                        {
+                                category => [ Sentient ],
+                                sound    => [ "roars", "grunts", "bellows" ],
+                                act      =>
+                                {
+                                        sits   => { location => Arborial },
+
+                                        fights => { minimum => 2,
+                                                    association => "argument",
+                                                  },
+                                },
+                        },
+
+                 },
+	};
+
+I'll see what I can do.
+
+-----------cut-----------cut-----------cut-----------cut-----------cut----------
+
+
+   > * If they are missing (can't tell currently), associations for other
+   > entities beside verbs.
+
+Yes, this is needed and not too hard to add.
+
+-----------cut-----------cut-----------cut-----------cut-----------cut----------
+
+   > * An option to always use the determined article "the" instead "a" with
+   >   a noun to stress it.
+
+Always? How about randomly sometimes?
+
+-----------cut-----------cut-----------cut-----------cut-----------cut----------
+
+   > * A way to associate objects with verbs. Currently, Coy produces sentences
+   >   like:
+   >   would be great. This is especially useful for objects that can't do
+   >   much beside lying around (books).
+
+I certainly agree. Objects are *high* on the ToDo list.
+
+-----------cut-----------cut-----------cut-----------cut-----------cut----------
+
+   > * A way to extend the set of locations would also fit in nicely.
+   >   Always using terrestrial is a bit boring. I tried to let philosophers
+   >   think in trees, but although it leads to humourous haikus, it's a bit
+   >   irritating.
+
+Yes, this is also on the ToDo list.
+
+   > * A small sub to extend @aquatic,
+   >   so you can add The Big Pond or whatever.  (Some seas, etc).
+
+Yes, this would be part of allowing new locations (see below).
+

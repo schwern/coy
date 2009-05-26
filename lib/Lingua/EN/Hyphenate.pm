@@ -281,14 +281,87 @@ __END__
 
 =head1 NAME
 
-Lingua::En::Hyphenate - Perl extension for syllable-based hyphenation
+Lingua::EN::Hyphenate - Perl extension for syllable-based hyphenation
 
 =head1 SYNOPSIS
 
-  use Lingua::En::Hyphenate;
+  use Lingua::EN::Hyphenate qw( hyphenate syllables def_syl def_hyph );
+
+  my $word = 'intromission';
+
+  my $syllables = syllables($word);	# 'in~tro~mis~sion'
+  my @syllables = syllables($word);	# ('in','tro','mis','sion')
+
+  ($end_of_line_1, $start_of_line_2)	# ('intro-','mission')
+	= hyphenate($word, 6);		# Break word at or before 6th char
+
+  ($end_of_line_1, $start_of_line_2)	# ('intromis-','sion')
+	= hyphenate($word, 8);		# Break word at or before 8th char
+
+  my $hyphen = '...';
+  ($end_of_line_1, $start_of_line_2)	# ('intro...','mission')
+	= hyphenate($word, 8, $hyphen);	# Use specified hyphen (not '-')
+
+  def_syl('here~say');			# Where the syllables are
+  def_syl('he~re~sy');			# Where the syllables are
+
+  def_hyph('here~say');			# Where the word may be broken
+  def_hyph('her~esy');			# Where the word may be broken
 
 =head1 DESCRIPTION
 
+The exportable subroutines of Lingua::EN::Hyphenate provide a mechanism
+to break words into syllables, to hyphenate words at syllable boundaries,
+and to redefine the syllables or hyphenation of specific words.
+
+=head2 syllables
+
+This subroutine takes a single string argument and breaks it into syllables.
+In a scalar context it returns a string with the syllables separated by '~'
+characters. In a list context it returns a list of the syllables.
+
+=head2 hyphenate
+
+This subroutine takes a word to be broken, and an integer indicating the
+maximum number of characters allowed before the break. An optional third
+argument specifies the hyphenation marker ('-' by default).
+
+The subroutine returns a list of two elements: the characters before the break
+(including the hyphenation marker), and the rest of the word. The first element
+is guaranteed to be no longer than the length specified by the second
+argument.
+
+=head2 def_syl and def_hyph
+
+These subroutines specify a specific syllablic decomposition or hyphenation
+pattern (respectively) to be used for the specified word. The syllables or
+hyphenation fragments are separated by '~' characters. See the examples above.
+
+
 =head1 AUTHOR
+
+Damian Conway (damian@conway.org)
+
+
+=head1 BUGS AND IRRITATIONS
+
+The syllable extraction is algorithmic, not table-driven. That means the
+module is very short, but also that it can be *very* inaccurate. It's
+okay for haiku, but shouldn't be used for serious work. Consider
+Lingua::EN::Syllable or TeX::Hyphen instead.
+
+There are undoubtedly serious bugs lurking somewhere in this code, if
+only because it gives the impression of understanding a great deal
+more about English than it actually does.
+
+Bug reports and other feedback are most welcome.
+
+
+=head1 COPYRIGHT
+
+ Copyright (c) 1997-2000, Damian Conway. All Rights Reserved.
+ This module is free software. It may be used, redistributed
+and/or modified under the terms of the Perl Artistic License
+     (see http://www.perl.com/perl/misc/Artistic.html)
 
 =cut

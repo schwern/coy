@@ -1,8 +1,7 @@
 ==============================================================================
-                        Release of version 0.05 of Coy
+                        Release of version 0.06 of Coy
 ==============================================================================
 
-DESCRIPTION
 
 	Error messages 
 	strewn across my terminal. 
@@ -56,15 +55,19 @@ DESCRIPTION
 
 ==============================================================================
 
-CHANGES IN VERSION 0.05
+CHANGES IN VERSION 0.06
 
 
-	- Added user-configurable vocabulary
+	- Fixed minor documentation glitch (thanks Elaine)
 
-	- Added user-configurable syllable checker
+	- Fixed a/an on singular nouns (thanks Abigail)
 
-	- Improved documentation
+	- Fixed another minor doc typo (thanks Marcus)
 
+	- Added RESET sub to allow vocab to be removed
+	  within .coyrc (thanks Marcus)
+
+	- Fixed bug with nesting checker (thanks Soren and Abigail)
 
 
 ==============================================================================

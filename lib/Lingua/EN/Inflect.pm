@@ -8,7 +8,7 @@ require Exporter;
 
 @ISA = qw(Exporter);
 
-$VERSION = '1.85';
+$VERSION = '1.86';
 
 %EXPORT_TAGS =
 (
@@ -51,7 +51,7 @@ sub classical
 
 my $persistent_count;
 
-sub NUM(;$$)	# (;$count,$show)
+sub NUM		# (;$count,$show)
 {
 	if (defined $_[0])
 	{
@@ -68,7 +68,7 @@ sub NUM(;$$)	# (;$count,$show)
 
 # 0. PERFORM GENERAL INFLECTIONS IN A STRING
 
-sub inflect($)
+sub inflect
 {
 	my $save_persistent_count = $persistent_count;
 	my @sections = split /(NUM\([^)]*\))/, $_[0];
@@ -82,9 +82,11 @@ sub inflect($)
 		       s/\bPL   \( ([^),]*) (, ([^)]*) )? \)  / PL($1,$3)   /xeg
 		    || s/\bPL_N \( ([^),]*) (, ([^)]*) )? \)  / PL_N($1,$3) /xeg
 		    || s/\bPL_V \( ([^),]*) (, ([^)]*) )? \)  / PL_V($1,$3) /xeg
+		    || s/\bPL_ADJ \( ([^),]*) (, ([^)]*) )? \)  / PL_ADJ($1,$3) /xeg
 		    || s/\bAN?  \( ([^),]*) (, ([^)]*) )? \)  / A($1,$3)    /xeg
 		    || s/\bNO   \( ([^),]*) (, ([^)]*) )? \)  / NO($1,$3)   /xeg
 		    || s/\bORD  \( ([^)]*) \)                 / ORD($1)   /xeg
+		    || s/\bNUMWORDS  \( ([^)]*) \)                 / NUMWORDS($1)   /xeg
 		}
 
 		$inflection .= $_;
@@ -137,7 +139,7 @@ my $PL_sb_irregular = join '|', keys %PL_sb_irregular;
 
 # CLASSICAL "..a" -> "..ata"
 
-my $PL_sb_C_a_ata = join "|", map { chop; $_; }
+my @PL_sb_C_a_ata = 
 (
 	"anathema", "bema", "carcinoma", "charisma", "diploma",
 	"dogma", "drama", "edema", "enema", "enigma", "lemma",
@@ -145,6 +147,8 @@ my $PL_sb_C_a_ata = join "|", map { chop; $_; }
 	"sarcoma", "schema", "soma", "stigma", "stoma", "trauma",
 	"gumma", "pragma",
 );
+
+my $PL_sb_C_a_ata = join "|", map { substr($_,0,-1) } @PL_sb_C_a_ata;
 
 # UNCONDITIONAL "..a" -> "..ae"
 
@@ -164,14 +168,14 @@ my $PL_sb_C_a_ae = join "|",
 
 # CLASSICAL "..en" -> "..ina"
 
-my $PL_sb_C_en_ina = join "|", map { chop; chop; $_; }
+my $PL_sb_C_en_ina = join "|", map { substr($_,0,-2) }
 (
 	"stamen",	"foramen",	"lumen",
 );
 
 # UNCONDITIONAL "..um" -> "..a"
 
-my $PL_sb_U_um_a = join "|", map { chop; chop; $_; }
+my $PL_sb_U_um_a = join "|", map { substr($_,0,-2) }
 (
 	"bacterium",	"agendum",	"desideratum",	"erratum",
 	"stratum",	"datum",	"ovum",		"extremum",
@@ -180,7 +184,7 @@ my $PL_sb_U_um_a = join "|", map { chop; chop; $_; }
 
 # CLASSICAL "..um" -> "..a"
 
-my $PL_sb_C_um_a = join "|", map { chop; chop; $_; }
+my $PL_sb_C_um_a = join "|", map { substr($_,0,-2) }
 (
 	"maximum",	"minimum",	"momentum",	"optimum",
 	"quantum",	"cranium",	"curriculum",	"dictum",
@@ -194,7 +198,7 @@ my $PL_sb_C_um_a = join "|", map { chop; chop; $_; }
 
 # UNCONDITIONAL "..us" -> "i"
 
-my $PL_sb_U_us_i = join "|", map { chop; chop; $_; }
+my $PL_sb_U_us_i = join "|", map { substr($_,0,-2) }
 (
 	"alumnus",	"alveolus",	"bacillus",	"bronchus",
 	"locus",	"nucleus",	"stimulus",	"meniscus",
@@ -202,7 +206,7 @@ my $PL_sb_U_us_i = join "|", map { chop; chop; $_; }
 
 # CLASSICAL "..us" -> "..i"
 
-my $PL_sb_C_us_i = join "|", map { chop; chop; $_; }
+my $PL_sb_C_us_i = join "|", map { substr($_,0,-2) }
 (
 	"focus",	"radius",	"genius",
 	"incubus",	"succubus",	"nimbus",
@@ -221,7 +225,7 @@ my $PL_sb_C_us_us = join "|",
 
 # UNCONDITIONAL "..on" -> "a"
 
-my $PL_sb_U_on_a = join "|", map { chop; chop; $_; }
+my $PL_sb_U_on_a = join "|", map { substr($_,0,-2) }
 (
 	"criterion",	"perihelion",	"aphelion",
 	"phenomenon",	"prolegomenon",	"noumenon",
@@ -230,7 +234,7 @@ my $PL_sb_U_on_a = join "|", map { chop; chop; $_; }
 
 # CLASSICAL "..on" -> "..a"
 
-my $PL_sb_C_on_a = join "|", map { chop; chop; $_; }
+my $PL_sb_C_on_a = join "|", map { substr($_,0,-2) }
 (
 	"oxymoron",
 );
@@ -242,7 +246,7 @@ my @PL_sb_C_o_i =
 	"solo",		"soprano",	"basso",	"alto",
 	"contralto",	"tempo",
 );
-my $PL_sb_C_o_i = join "|", map { my $w=$_; chop $w; $w; } @PL_sb_C_o_i;
+my $PL_sb_C_o_i = join "|", map { substr($_,0,-1) } @PL_sb_C_o_i;
 
 # ALWAYS "..o" -> "..os"
 
@@ -265,14 +269,14 @@ my $PL_sb_U_o_os = join "|",
 
 # UNCONDITIONAL "..ex" -> "..ices"
 
-my $PL_sb_U_ex_ices = join "|", map { chop; chop; $_; }
+my $PL_sb_U_ex_ices = join "|", map { substr($_,0,-2) }
 (
 	"codex",	"murex",	"silex",
 );
 
 # CLASSICAL "..ex" -> "..ices"
 
-my $PL_sb_C_ex_ices = join "|", map { chop; chop; $_; }
+my $PL_sb_C_ex_ices = join "|", map { substr($_,0,-2) }
 (
 	"vortex",	"vertex",	"cortex",	"latex",
 	"pontifex",	"apex",		"index",	"simplex",
@@ -385,7 +389,7 @@ my $PL_prep = join '|', qw (
         since till to under until unto upon with
 );
 
-my $PL_sb_prep_compound = '(.*?)((-|\s+)(in|to|of|at|de)(-|\s+)(.*))';
+my $PL_sb_prep_compound = '(.*?)((-|\s+)('.$PL_prep.'|d[eu])((-|\s+)(.*))?)';
 
 
 my %PL_pron_nom =
@@ -530,13 +534,13 @@ my @PL_v_user_defined  = ();
 my @PL_adj_user_defined  = ();
 my @A_a_user_defined   = ();
 
-sub def_noun($$)
+sub def_noun
 {
 	unshift @PL_sb_user_defined, checkpatsubs(@_);
 	return 1;
 }
 
-sub def_verb($$$$$$)
+sub def_verb
 {
 	unshift @PL_v_user_defined, checkpatsubs(@_[4,5]);
 	unshift @PL_v_user_defined, checkpatsubs(@_[2,3]);
@@ -544,25 +548,25 @@ sub def_verb($$$$$$)
 	return 1;
 }
 
-sub def_adj($$)
+sub def_adj
 {
 	unshift @PL_adj_user_defined, checkpatsubs(@_);
 	return 1;
 }
 
-sub def_a($)	
+sub def_a
 {
 unshift @A_a_user_defined, checkpat(@_,'a');
 return 1;
 }
 
-sub def_an($)
+sub def_an
 {
 unshift @A_a_user_defined, checkpat(@_,'an');
 return 1;
 }
 
-sub ud_match($@)
+sub ud_match
 {
 my $word = shift;
 for (my $i=0; $i < @_; $i+=2)
@@ -591,7 +595,7 @@ do $rcfile or die "\nBad .inflectrc file ($rcfile):\n\t$@\n"
 if $rcfile && -r $rcfile && -s $rcfile;
 };
 
-sub postprocess($$)	# FIX PEDANTRY AND CAPITALIZATION :-)
+sub postprocess		# FIX PEDANTRY AND CAPITALIZATION :-)
 {
 my ($orig, $inflected) = @_;
 $inflected =~ s/([^|]+)\|(.+)/ $classical?$2:$1 /e;
@@ -601,7 +605,7 @@ return $orig =~ /^I$/	? $inflected
  :			  $inflected;
 }
 
-sub PL($;$)
+sub PL
 #   PL($word,$number)
 {
 my ($str, $count) = @_;
@@ -613,7 +617,7 @@ my $plural = postprocess $word,  _PL_special_adjective($word,$count)
 return $pre.$plural.$post;
 }
 
-sub PL_N($;$)	
+sub PL_N
 #   PL_N($word,$number)
 {
 my ($str, $count) = @_;
@@ -623,7 +627,7 @@ my $plural = postprocess $word, _PL_noun($word,$count);
 return $pre.$plural.$post;
 }
 
-sub PL_V($;$)	
+sub PL_V
 #   PL_V($word,$number)
 {
 my ($str, $count) = @_;
@@ -634,7 +638,7 @@ my $plural = postprocess $word, _PL_special_verb($word,$count)
 return $pre.$plural.$post;
 }
 
-sub PL_ADJ($;$)	
+sub PL_ADJ
 #   PL_ADJ($word,$number)
 {
 my ($str, $count) = @_;
@@ -645,12 +649,12 @@ my $plural = postprocess $word, _PL_special_adjective($word,$count)
 return $pre.$plural.$post;
 }
 
-sub PL_eq($$)	  { _PL_eq(@_, \&PL); }
-sub PL_N_eq($$)	  { _PL_eq(@_, \&PL_N); }
-sub PL_V_eq($$)	  { _PL_eq(@_, \&PL_V); }
-sub PL_ADJ_eq($$) { _PL_eq(@_, \&PL_ADJ); }
+sub PL_eq	  { _PL_eq(@_, \&PL); }
+sub PL_N_eq	  { _PL_eq(@_, \&PL_N); }
+sub PL_V_eq	  { _PL_eq(@_, \&PL_V); }
+sub PL_ADJ_eq	  { _PL_eq(@_, \&PL_ADJ); }
 
-sub _PL_eq($$$)
+sub _PL_eq
 {
 my ( $word1, $word2, $PL ) = @_;
 my $classval = $classical;
@@ -679,12 +683,12 @@ if ($PL == \&PL || $PL == \&PL_ADJ)
 return $result;
 }
 
-sub _PL_reg_plurals($$$$)
+sub _PL_reg_plurals
 {
 $_[0] =~ /($_[1])($_[2]\|\1$_[3]|$_[3]\|\1$_[2])/
 }
 
-sub _PL_check_plurals_N($$)
+sub _PL_check_plurals_N
 {
 my $pair = "$_[0]|$_[1]";
 foreach ( values %PL_sb_irregular_s )	{ return 1 if $_ eq $pair; }
@@ -710,7 +714,7 @@ return 1 if _PL_reg_plurals($pair, $PL_sb_C_a_ata,   "as","ata")
 return 0;
 }
 
-sub _PL_check_plurals_ADJ($$$)
+sub _PL_check_plurals_ADJ
 {
 my ( $word1a, $word2a ) = @_;
 my ( $word1b, $word2b ) = @_;
@@ -739,7 +743,7 @@ if ($word1b)
 return "";
 }
 
-sub _PL_noun($;$)
+sub _PL_noun
 {
 my ( $word, $count ) = @_;
 my $value;				# UTILITY VARIABLE
@@ -870,7 +874,7 @@ return "${word}s";
 }
 
 
-sub _PL_special_verb($;$)
+sub _PL_special_verb
 {
 my ( $word, $count ) = @_;
 $count = $persistent_count
@@ -904,7 +908,7 @@ $word =~ /\s/				and return undef;
 
 # HANDLE STANDARD 3RD PERSON (CHOP THE ...(e)s OFF SINGLE WORDS)
 
-$word =~ /^(.*)([cs]h|[sx]|zz)es$/i	and return "$1$2";
+$word =~ /^(.*)([cs]h|[x]|zz|ss)es$/i	and return "$1$2";
 
 $word =~ /^(..+)ies$/i			and return "$1y";
 $word =~ /^(.+)oes$/i			and return "$1o";
@@ -916,7 +920,7 @@ $word =~ /^(.*[^s])s$/i			and return $1;
 return undef;
 }  
 
-sub _PL_general_verb($;$)
+sub _PL_general_verb
 {
 my ( $word, $count ) = @_;
 $count = $persistent_count
@@ -943,7 +947,7 @@ return $word;
 
 }
 
-sub _PL_special_adjective($;$)
+sub _PL_special_adjective
 {
 my ( $word, $count ) = @_;
 $count = $persistent_count
@@ -1007,7 +1011,7 @@ my $A_explicit_an = join '|',
 "hour(?!i)", "heir", "honest", "hono",
 );
 
-sub A($;$) 
+sub A
 {
 my ($str, $count) = @_;
 my ($pre, $word, $post) = ( $str =~ m/\A(\s*)(.+?)(\s*)\Z/ );
@@ -1016,9 +1020,9 @@ my $result = _indef_article($word,$count);
 return $pre.$result.$post;
 }
 
-sub AN($;$) { goto &A }
+sub AN { goto &A }
 
-sub _indef_article($;$)
+sub _indef_article
 {
 my ( $word, $count ) = @_;
 
@@ -1068,7 +1072,7 @@ $word =~ /^($A_y_cons)/io	and return "an $word";
 
 # 2. TRANSLATE ZERO-QUANTIFIED $word TO "no PL($word)"
 
-sub NO($;$)
+sub NO
 {
 my ($str, $count) = @_;
 my ($pre, $word, $post) = ($str =~ m/\A(\s*)(.+?)(\s*)\Z/);
@@ -1197,7 +1201,7 @@ sub enword
 	return $num;
 }
 
-sub NUMWORDS($;@)
+sub NUMWORDS
 {
 	my $num = shift;
 	my %arg = ( %default_args, @_ );

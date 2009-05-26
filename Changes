@@ -12,3 +12,17 @@ Revision history for Perl extension Coy.
 
 	- Improved documentation
 
+
+
+0.06	Sat Sep  2 12:28:57 2000
+
+	- Fixed minor documentation glitch (thanks Elaine)
+
+	- Fixed a/an on singular nouns (thanks Abigail)
+
+	- Fixed another minor doc typo (thanks Marcus)
+
+	- Added RESET sub to allow vocab to be removed
+	  within .coyrc (thanks Marcus)
+
+	- Fixed bug with nesting checker (thanks Soren and Abigail)

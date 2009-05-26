@@ -1,4 +1,5 @@
 package Coy;
+$VERSION = '0.06';
 
 BEGIN
 {
@@ -155,45 +156,65 @@ $Coy::agent_categories = {};
 $Coy::associations = "";
 my $nonassoc = 0;
 
+sub RESET { '__RESET__' }
+
 sub tree
 {
-	push @Coy::tree, @_;
+	if ($_[0] eq '__RESET__')
+		{ @Coy::tree = () }
+	else
+		{ push @Coy::tree, @_; }
 	1;
 }
 
 sub fruit_tree
 {
-	push @Coy::fruit_tree, @_;
+	if ($_[0] eq '__RESET__')
+		{ @Coy::fruit_tree = () }
+	else
+		{ push @Coy::fruit_tree, @_; }
 	1;
 }
 
 sub place
 {
-	push @Coy::place, @_;
+	if ($_[0] eq '__RESET__')
+		{ @Coy::place = () }
+	else
+		{ push @Coy::place, @_; }
 	1;
 }
 
 sub personage
 {
-	push @Coy::personage, @_;
+	if ($_[0] eq '__RESET__')
+		{ @Coy::personage = () }
+	else
+		{ push @Coy::personage, @_; }
 	1;
 }
 
 sub noun
 {
 	my $hashref = shift;
-	Carp::croak "Usage: noun <hash reference>" unless ref($hashref) eq 'HASH';
-	$Coy::agent = { %$Coy::agent, %$hashref };
-	# print STDERR "Added ", scalar keys %$hashref, " to agent\n";
+	if (!ref($hashref) && $hashref eq '__RESET__')
+		{ $Coy::agent = {} }
+	else
+		{ Carp::croak "Usage: noun <hash reference>" unless ref($hashref) eq 'HASH';
+		  $Coy::agent = { %$Coy::agent, %$hashref };
+		}
 	1;
 }
 
 sub categories
 {
 	my $hashref = shift;
-	Carp::croak "Usage: categories <hash reference>" unless ref($hashref) eq 'HASH';
-	$Coy::agent_categories = { %$Coy::agent_categories, %$hashref };
-	# print STDERR "Added ", scalar keys %$hashref, " to agent_categories\n";
+	if (!ref($hashref) && $hashref eq '__RESET__')
+		{ $Coy::agent_categories = {} }
+	else
+		{ Carp::croak "Usage: categories <hash reference>" unless ref($hashref) eq 'HASH';
+		  $Coy::agent_categories = { %$Coy::agent_categories, %$hashref };
+		}
 	1;
 }
 
@@ -382,7 +403,7 @@ sub Generate
 		);
 		;
 
-	s/^1(?= )/a/;
+	s/^1\s+(\S+)/A($1)/e;
 	s/^2(?= )/random "a pair of", "two"/e;
 	s/^(\d+)(?= )/NUMWORDS($1)/e;
 	$Coy::associations = "" unless $nonassoc;
@@ -823,7 +844,7 @@ $SIG{__DIE__}  = sub
 	$nested++;
 	die with_haiku(@_) unless $nested;
 	die @_ if $nested;
-	$nexted--;
+	$nested--;
 };
 
 1;
@@ -833,7 +854,7 @@ __END__
 
 =head1 NAME
 
-    Coy (like Carp only prettier)
+    Coy - like Carp only prettier
 
 =head1 SYNOPSIS
 
@@ -850,6 +871,9 @@ __END__
     # You can add vocab in the $HOME/.coyrc file:
     # ===========================================
 	    
+	    noun RESET;	# REMOVE EXISTING noun VOCAB
+			# WORKS FOR OTHER SPECIFIERS TOO
+
 	    noun {
 			wookie =>
 			{
@@ -988,9 +1012,21 @@ __END__
 
 =head1 CHANGING THE SYLLABLE COUNTER
 
-	If you don't like the
-	syllable counter you can
-	always replace it.
+	Real haiku often <BR>
+	have imperfect syllable<BR>
+	counts.
+
+	The deficiencies of<BR>
+	Coy's inbuilt counter are thus<BR>
+	artistic virtues.
+
+	But some connoisseurs<BR>
+	demand their syllable counts<BR>
+	be always exact.
+
+	So if you don't like<BR>
+	the syllable counter, Coy<BR>
+	let's you replace it.
 
 	Coy provides a sub
 	called C<syllable_counter> for
@@ -1148,7 +1184,7 @@ __END__
 
 =head1 COPYRIGHT
 
-        Copyright (c) 1998, Damian Conway. All Rights Reserved.
+        Copyright (c) 1998-2000, Damian Conway. All Rights Reserved.
       This module is free software. It may be used, redistributed
       and/or modified under the terms of the Perl Artistic License
            (see http://www.perl.com/perl/misc/Artistic.html)

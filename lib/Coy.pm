@@ -824,7 +824,7 @@ $SIG{__DIE__}  = sub
 	$nested++;
 	die with_haiku(@_) unless $nested;
 	die @_ if $nested;
-	$nexted--;
+	$nested--;
 };
 
 1;
